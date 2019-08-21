@@ -54,8 +54,9 @@ File.open(fname, 'w') do |io|
 				let index = Math.floor(Math.random() * Math.floor(words.length));
 				let word_url = base_uri + words[index] + '#' + fragment;
 
-				let node = document.getElementById('msg');
+				let node = document.getElementById('msg-link');
 				node.textContent = word_url;
+				node.href = word_url;
 
 				node = document.getElementById('wiktionary');
 				node.src = word_url;
@@ -69,7 +70,7 @@ File.open(fname, 'w') do |io|
 			};
 		</script>
 		<button id="btn">Another word</button>
-		<p id="msg"></p>
+		<p id="msg"><a href="" target="random-nl-word" id="msg-link"></a></p>
 
 		<iframe id="wiktionary"
     height="800"
