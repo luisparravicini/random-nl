@@ -37,7 +37,10 @@ File.open(fname, 'w') do |io|
 				font-family: sans-serif;
 				display: inline-block;
 			}
-			#btn { margin-right: 4em; }
+			#btn {
+				padding: 0.4em;
+				margin-right: 4em;
+			}
 		</style>
 	</head>
 	<body>
