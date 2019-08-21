@@ -13,9 +13,11 @@ if dump
 	puts 'urls to visit:'
 	puts store.to_visit
 	puts "\nvisited urls:"
-	puts store.visited
+	puts store.visited.to_a
 	puts "\nwords:"
-	puts store.words
+	store.words.entries.each do |e|
+		puts e.join("\t")
+	end
 	exit 0
 end
 
