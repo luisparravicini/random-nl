@@ -20,9 +20,7 @@ if dump
 end
 
 first_url = 'https://en.wiktionary.org/wiki/Index:Dutch'
-unless store.visited.include?(first_url)
-	store.to_visit << first_url
-end
+store.queue(first_url)
 
 puts "urls: %d fetched, %d to visit. %d words" %
 	[store.visited.size, store.to_visit.size, store.words.size]
@@ -55,11 +53,7 @@ while !store.to_visit.empty? do
 		next unless next_url.path =~ %r{/wiki/Index:Dutch/}
 
 		next_url.fragment = nil
-
-		next_url = next_url.to_s
-		unless store.visited.include?(next_url) || store.to_visit.include?(next_url)
-			store.to_visit << next_url
-		end
+		store.queue(next_url.to_s)
 	end
 
 	puts

@@ -20,6 +20,12 @@ class DataStore
 		FileUtils.mv(tmp_path, @data_path)
 	end
 
+	def queue(url)
+		unless @visited.include?(url) || @to_visit.include?(url)
+			@to_visit << next_url
+		end
+	end
+
 	protected
 
 	def load
