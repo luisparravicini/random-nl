@@ -11,9 +11,9 @@ store = DataStore.new(dir)
 
 if dump
 	puts 'urls to visit:'
-	p store.to_visit
+	puts store.to_visit
 	puts "\nvisited urls:"
-	p store.visited
+	puts store.visited
 	puts "\nwords:"
 	puts store.words
 	exit 0
