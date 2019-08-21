@@ -7,5 +7,7 @@ README
 
 `bin/random.rb` prints a random word from the list and tries to open the url to the entry (it uses `open` which is a macOS command).
 
+`bin/mk_html.rb` creates a html file which takes you to a random word.
+
 
 The scripts require Ruby (tested with 2.6)
