@@ -11,3 +11,5 @@ README
 
 
 The scripts require Ruby (tested with 2.6)
+
+[output/random_word.html](output/random_word.html) has the html output from the word list created on 2019-08-21
