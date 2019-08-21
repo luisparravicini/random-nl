@@ -2,33 +2,64 @@
 
 require 'open-uri'
 require 'nokogiri'
-require 'set'
+require_relative 'lib/data_store'
 
 
-next_urls = Queue.new
-next_urls << URI.parse('https://en.wiktionary.org/wiki/Index:Dutch')
-visited = Set.new
 
-while !next_urls.empty? do
-	url = next_urls.pop
-	visited << url
+dir = File.join(File.dirname(__FILE__), 'data')
+store = DataStore.new(dir)
 
-	print '%s (%d queued)' % [url, next_urls.size]
+first_url = URI.parse('https://en.wiktionary.org/wiki/Index:Dutch')
+unless store.visited.include?(first_url)
+	store.to_visit << first_url
+end
+
+puts "urls: %d fetched, %d to visit. %d words" %
+	[store.visited.size, store.to_visit.size, store.words.size]
+
+n = 0
+while !store.to_visit.empty? do
+	url = store.to_visit.delete_at(0)
+	store.visited << url
+
+	print '%s (%d queued, %d words)' %
+		[url, store.to_visit.size, store.words.size]
 
 	doc = Nokogiri::HTML(url.read)
-	n = 0
 	doc.search('a').each do |link|
 		href = link['href']
 		next if href.nil?
 
-		next_url = URI.join(url, href)
+		begin
+			next_url = URI.join(url, href)
+		rescue URI::InvalidURIError => e
+			print "\n\tERROR: #{e.message}"
+			next
+		end
+
+		if next_url.fragment == 'Dutch'
+			word = link.content.strip
+			store.words[word] = next_url
+		end
+
 		next unless next_url.path =~ %r{/wiki/Index:Dutch/}
 
-		unless visited.include?(next_url)
-			next_urls << next_url
-			n += 1
+		next_url.fragment = nil
+
+		unless store.visited.include?(next_url)
+			store.to_visit << next_url
 		end
 	end
 
-	puts " [#{n} fetched]"
+	puts
+
+	n += 1
+	if n > 20
+		print 'saving...'
+		store.save
+		puts
+		n = 0
+	end
 end
+
+store.save
