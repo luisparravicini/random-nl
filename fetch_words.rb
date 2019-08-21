@@ -11,9 +11,9 @@ store = DataStore.new(dir)
 
 if dump
 	puts 'urls to visit:'
-	puts store.to_visit
+	p store.to_visit
 	puts "\nvisited urls:"
-	puts store.visited
+	p store.visited
 	puts "\nwords:"
 	puts store.words
 	exit 0
@@ -57,7 +57,7 @@ while !store.to_visit.empty? do
 		next_url.fragment = nil
 
 		next_url = next_url.to_s
-		unless store.visited.include?(next_url)
+		unless store.visited.include?(next_url) || store.to_visit.include?(next_url)
 			store.to_visit << next_url
 		end
 	end
