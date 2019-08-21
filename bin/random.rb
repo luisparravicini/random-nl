@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby -W
 
-require 'open-uri'
-require 'nokogiri'
 require_relative '../lib/data_store'
 
 
