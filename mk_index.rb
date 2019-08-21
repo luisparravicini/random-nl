@@ -5,11 +5,21 @@ require 'nokogiri'
 require_relative 'lib/data_store'
 
 
-
+dump = (ARGV.shift == '-d')
 dir = File.join(File.dirname(__FILE__), 'data')
 store = DataStore.new(dir)
 
-first_url = URI.parse('https://en.wiktionary.org/wiki/Index:Dutch')
+if dump
+	puts 'urls to visit:'
+	puts store.to_visit
+	puts "\nvisited urls:"
+	puts store.visited
+	puts "\nwords:"
+	puts store.words
+	exit 0
+end
+
+first_url = 'https://en.wiktionary.org/wiki/Index:Dutch'
 unless store.visited.include?(first_url)
 	store.to_visit << first_url
 end
@@ -25,7 +35,7 @@ while !store.to_visit.empty? do
 	print '%s (%d queued, %d words)' %
 		[url, store.to_visit.size, store.words.size]
 
-	doc = Nokogiri::HTML(url.read)
+	doc = Nokogiri::HTML(URI.parse(url).read)
 	doc.search('a').each do |link|
 		href = link['href']
 		next if href.nil?
@@ -46,6 +56,7 @@ while !store.to_visit.empty? do
 
 		next_url.fragment = nil
 
+		next_url = next_url.to_s
 		unless store.visited.include?(next_url)
 			store.to_visit << next_url
 		end
