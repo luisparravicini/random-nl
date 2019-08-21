@@ -2,11 +2,10 @@
 
 require 'open-uri'
 require 'nokogiri'
-require_relative 'lib/data_store'
+require_relative '../lib/data_store'
 
 
-dir = File.join(File.dirname(__FILE__), 'data')
-store = DataStore.new(dir)
+store = DataStore.new
 
 words = store.words
 if words.empty?

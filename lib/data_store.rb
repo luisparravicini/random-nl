@@ -4,7 +4,9 @@ require 'fileutils'
 class DataStore
 	attr_reader :visited, :to_visit, :words
 
-	def initialize(path)
+	def initialize(path=nil)
+		path ||= File.join(File.dirname(__FILE__), '..', 'data')
+
 		FileUtils.mkdir_p(path) unless File.directory?(path)
 		@data_path = File.join(path, 'urls.bin')
 		load
