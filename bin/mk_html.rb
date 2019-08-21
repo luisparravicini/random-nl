@@ -32,6 +32,7 @@ File.open(fname, 'w') do |io|
 	io.write <<-HTML
 	<html>
 	<head>
+		<title>Random dutch word from Wiktionary</title>
 		<style>
 			#btn, #msg {
 				font-family: sans-serif;
